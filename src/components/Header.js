@@ -1,7 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { TiShoppingCart } from "react-icons/ti";
 
 export default function Header() {
+  let reduxState = useSelector((state) => state.cartReducer.cartItems);
+  // useSelector((state) => console.log(state));
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-primary  ">
@@ -35,8 +40,8 @@ export default function Header() {
               <Link className="nav-link text-white" to="/">
                 logout
               </Link>
-              <Link className="nav-link text-white" to="/">
-                cart
+              <Link className="nav-link text-white" to="/cart">
+                <TiShoppingCart /> {reduxState.length}
               </Link>
             </div>
           </div>

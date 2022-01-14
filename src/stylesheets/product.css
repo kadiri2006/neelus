@@ -1,0 +1,66 @@
+.product {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-img {
+  height: 200px;
+  width: 150px;
+}
+
+.product p {
+  min-height: 3rem;
+}
+
+.after-action {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: xx-large;
+  font-weight: bold;
+
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.after-action p {
+  color: whitesmoke;
+  background-color: rgb(13, 110, 253);
+  padding: 0.5rem;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border-radius: 0.5rem;
+}
+
+.product:hover .after-action {
+  opacity: 1;
+}
+
+.total-amount {
+  background-color: rgb(13, 110, 253);
+  padding: 1rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+
+  font-weight: bold;
+  color: #fff;
+}
+
+.total-amount:hover {
+  background-color: whitesmoke;
+  color: blue;
+  font-weight: bolder;
+  font-size: x-large;
+}
