@@ -1,5 +1,6 @@
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import * as yup from "yup";
 import MyError from "./MyError";
 import YupPassword from "yup-password";
@@ -8,15 +9,36 @@ import "../stylesheets/product.css";
 YupPassword(yup);
 
 export default function RegisterPage() {
+  const [loading, setLoading] = useState(false);
+
   const initialValues = {
     email: "",
     password: "",
     confirmPassword: "",
   };
-  const onSubmit = (values, { resetForm }) => {
+  const onSubmit = async (values, { resetForm }) => {
+    setLoading(true);
+    const auth = getAuth();
+    await createUserWithEmailAndPassword(auth, values.email, values.password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        setLoading(false);
+        setTimeout(() => {
+          alert("signup sucessfully");
+        }, 1000);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setLoading(false);
+        setTimeout(() => {
+          alert(`signup failed : ${errorMessage}`);
+        }, 1000);
+      });
+
     resetForm();
-    alert("submitted");
-    console.log(values);
   };
   const validationSchema = yup.object({
     email: yup.string().email().required("email not be blank"),
@@ -69,7 +91,8 @@ export default function RegisterPage() {
                 <label htmlFor="confirmPassword">confirmPassword</label>
                 <Field type="password" name="confirmPassword" />
                 <ErrorMessage name="confirmPassword" component={MyError} />
-                <button className="">REGISTER</button>
+                <button type="submit">REGISTER</button>
+                {loading && <p>loading....</p>}
               </div>
             </Form>
           </Formik>

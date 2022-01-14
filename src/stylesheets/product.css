@@ -70,3 +70,9 @@
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   margin-left: 20px;
 }
+
+.form-shadow p {
+  color: whitesmoke;
+  font-size: xx-large;
+  font-weight: bolder;
+}

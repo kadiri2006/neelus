@@ -1,3 +1,4 @@
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
@@ -12,10 +13,20 @@ export default function LoginPage() {
     email: "",
     password: "",
   };
-  const onSubmit = (values, { resetForm }) => {
+  const onSubmit = async (values, { resetForm }) => {
+    const auth = getAuth();
+    await signInWithEmailAndPassword(auth, values.email, values.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        alert(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
+
     resetForm();
-    alert("submitted");
-    console.log(values);
   };
   const validationSchema = yup.object({
     email: yup.string().email().required("email not be blank"),
@@ -53,7 +64,7 @@ export default function LoginPage() {
                 <Field type="password" name="password" />
                 <ErrorMessage name="password" component={MyError} />
 
-                <button className="">LOGIN</button>
+                <button type="submit">LOGIN</button>
               </div>
             </Form>
           </Formik>
