@@ -8,19 +8,46 @@ import LoginPage from "./pages/LoginPage";
 import ProductInfo from "./pages/ProductInfo";
 import RegisterPage from "./pages/RegisterPage";
 
-function App() {
+export default function App() {
   return (
     <div className="">
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoutes>
+              <HomePage />
+            </ProtectedRoutes>
+          }
+        />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/productInfo/:prodId" element={<ProductInfo />} />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoutes>
+              <CartPage />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/productInfo/:prodId"
+          element={
+            <ProtectedRoutes>
+              <ProductInfo />
+            </ProtectedRoutes>
+          }
+        />
         <Route path="/firebase" element={<FirebaseTest />} />
       </Routes>
     </div>
   );
 }
 
-export default App;
+export function ProtectedRoutes({ children }) {
+  if (JSON.parse(localStorage.getItem("verifiedUser"))) {
+    return children;
+  } else {
+    return <LoginPage />;
+  }
+}

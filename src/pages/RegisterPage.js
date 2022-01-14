@@ -5,6 +5,7 @@ import * as yup from "yup";
 import MyError from "./MyError";
 import YupPassword from "yup-password";
 import "../stylesheets/product.css";
+import { Link } from "react-router-dom";
 
 YupPassword(yup);
 
@@ -26,7 +27,8 @@ export default function RegisterPage() {
         console.log(user);
         setLoading(false);
         setTimeout(() => {
-          alert("signup sucessfully");
+          alert("created successfully");
+          window.location.href = "/login";
         }, 1000);
       })
       .catch((error) => {
@@ -97,6 +99,9 @@ export default function RegisterPage() {
             </Form>
           </Formik>
         </div>
+      </div>
+      <div>
+        Already Have a Account ?<Link to="/login">Login</Link>
       </div>
     </div>
   );

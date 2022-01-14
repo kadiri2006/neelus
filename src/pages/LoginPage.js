@@ -1,29 +1,38 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import * as yup from "yup";
 import MyError from "./MyError";
 import YupPassword from "yup-password";
 import "../stylesheets/product.css";
+import { Link } from "react-router-dom";
 
 YupPassword(yup);
 
 export default function LoginPage() {
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   const initialValues = {
     email: "",
     password: "",
   };
   const onSubmit = async (values, { resetForm }) => {
+    setLoading(true);
+    setErrorMsg("");
     const auth = getAuth();
     await signInWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const user = userCredential.user;
-        alert(user);
+        setLoading(false);
+        await localStorage.setItem("verifiedUser", JSON.stringify(user.email));
+        window.location.href = "/";
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert(errorMessage);
+        setLoading(false);
+        setErrorMsg(errorMessage);
       });
 
     resetForm();
@@ -36,7 +45,7 @@ export default function LoginPage() {
 
   return (
     <div className="parent-register bg-secondary d-flex flex-column align-items-center vh-100 justify-content-center ">
-      <div className="row ">
+      <div className="row form-shadow ">
         <div className="col-md-5">
           <lottie-player
             src="https://assets6.lottiefiles.com/packages/lf20_yupefrh2.json"
@@ -47,7 +56,7 @@ export default function LoginPage() {
             autoplay
           ></lottie-player>
         </div>
-        <div className="col-md-5 form-shadow">
+        <div className="col-md-5 mt-5 mx-3 ">
           <Formik
             initialValues={initialValues}
             onSubmit={onSubmit}
@@ -63,12 +72,18 @@ export default function LoginPage() {
                 <label htmlFor="password">password</label>
                 <Field type="password" name="password" />
                 <ErrorMessage name="password" component={MyError} />
-
                 <button type="submit">LOGIN</button>
+                <div>
+                  {loading && <p>loading....</p>}
+                  <span className="text-danger">{errorMsg}</span>
+                </div>
               </div>
             </Form>
           </Formik>
         </div>
+      </div>
+      <div>
+        NewUser ?<Link to="/register">SignUp</Link>
       </div>
     </div>
   );

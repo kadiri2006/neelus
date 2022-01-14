@@ -32,7 +32,7 @@ export default function Header() {
                 aria-current="page"
                 to="/"
               >
-                users
+                {JSON.parse(localStorage.getItem("verifiedUser")) ?? "TestUser"}
               </Link>
               <Link className="nav-link text-white" to="/">
                 orders

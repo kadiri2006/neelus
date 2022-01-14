@@ -33,18 +33,6 @@ export default function HomePage() {
 
   const addToStore = (bangle) => {
     dispatch({ type: "ADD_TO_CART", payload: bangle });
-
-    /* function addToLocalStorage(bangle) {
-      let logic = localStorage.getItem("myCart");
-      if (logic === null) {
-        localStorage.setItem("myCart", JSON.stringify([bangle]));
-      } else {
-        let oldStore = JSON.parse(localStorage.getItem("myCart"));
-        oldStore.push(bangle);
-        localStorage.setItem("myCart", JSON.stringify(oldStore));
-      }
-    }
-    addToLocalStorage(bangle); */
   };
 
   return (
