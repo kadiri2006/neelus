@@ -130,7 +130,6 @@ export default function CartPage() {
           </table>
           <Modal show={show} onHide={handleOrder}>
             <Modal.Title>Delivey Address</Modal.Title>
-
             <Modal.Body>
               <Form onSubmit={handleOrder}>
                 <Row className="mb-3">

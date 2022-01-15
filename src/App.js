@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Spinner from "./components/Spinner";
+import Admin from "./pages/Admin";
 import CartPage from "./pages/CartPage";
 import FirebaseTest from "./pages/FirebaseTest";
 import HomePage from "./pages/HomePage";
@@ -37,6 +38,15 @@ export default function App() {
             </ProtectedRoutes>
           }
         />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoutes>
+              <Admin />
+            </ProtectedRoutes>
+          }
+        />
+
         <Route
           path="/productInfo/:prodId"
           element={
