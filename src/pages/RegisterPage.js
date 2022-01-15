@@ -94,7 +94,7 @@ export default function RegisterPage() {
                 <Field type="password" name="confirmPassword" />
                 <ErrorMessage name="confirmPassword" component={MyError} />
                 <button type="submit">REGISTER</button>
-                {loading && <p>loading....</p>}
+                {loading && <p>processing....</p>}
               </div>
             </Form>
           </Formik>

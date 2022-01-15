@@ -5,7 +5,9 @@ import { TiShoppingCart } from "react-icons/ti";
 
 export default function Header() {
   let reduxState = useSelector((state) => state.cartReducer.cartItems);
-  // useSelector((state) => console.log(state));
+  const logout = () => {
+    localStorage.removeItem("verifiedUser");
+  };
 
   return (
     <div>
@@ -32,12 +34,17 @@ export default function Header() {
                 aria-current="page"
                 to="/"
               >
-                {JSON.parse(localStorage.getItem("verifiedUser")) ?? "TestUser"}
+                {JSON.parse(localStorage.getItem("verifiedUser")).email ??
+                  "TestUser"}
               </Link>
-              <Link className="nav-link text-white" to="/">
+              <Link className="nav-link text-white" to="/orders">
                 orders
               </Link>
-              <Link className="nav-link text-white" to="/">
+              <Link
+                className="nav-link text-white"
+                to="/login"
+                onClick={logout}
+              >
                 logout
               </Link>
               <Link className="nav-link text-white" to="/cart">

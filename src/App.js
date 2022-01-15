@@ -5,6 +5,7 @@ import CartPage from "./pages/CartPage";
 import FirebaseTest from "./pages/FirebaseTest";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import OrdersPage from "./pages/OrdersPage";
 import ProductInfo from "./pages/ProductInfo";
 import RegisterPage from "./pages/RegisterPage";
 
@@ -20,13 +21,19 @@ export default function App() {
             </ProtectedRoutes>
           }
         />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
         <Route
           path="/cart"
           element={
             <ProtectedRoutes>
               <CartPage />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoutes>
+              <OrdersPage />
             </ProtectedRoutes>
           }
         />
@@ -38,6 +45,8 @@ export default function App() {
             </ProtectedRoutes>
           }
         />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/firebase" element={<FirebaseTest />} />
       </Routes>
     </div>

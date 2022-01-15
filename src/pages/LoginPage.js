@@ -24,8 +24,9 @@ export default function LoginPage() {
     await signInWithEmailAndPassword(auth, values.email, values.password)
       .then(async (userCredential) => {
         const user = userCredential.user;
+
         setLoading(false);
-        await localStorage.setItem("verifiedUser", JSON.stringify(user.email));
+        await localStorage.setItem("verifiedUser", JSON.stringify(user));
         window.location.href = "/";
       })
       .catch((error) => {
@@ -74,7 +75,7 @@ export default function LoginPage() {
                 <ErrorMessage name="password" component={MyError} />
                 <button type="submit">LOGIN</button>
                 <div>
-                  {loading && <p>loading....</p>}
+                  {loading && <p>processing....</p>}
                   <span className="text-danger">{errorMsg}</span>
                 </div>
               </div>
