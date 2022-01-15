@@ -6,7 +6,9 @@ import { MdDeleteOutline } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
 import Layout from "../components/Layout";
 import { db } from "../firebase";
-import { Button, Form, Modal, Row, Col } from "react-bootstrap";
+import { Button, Form, Modal, Row, Col, Tabs, Tab } from "react-bootstrap";
+
+import AllUsersOrders from "./AllUsersOrders";
 
 export default function Admin() {
   const [loading, setLoading] = useState(false);
@@ -133,55 +135,67 @@ export default function Admin() {
   return (
     <div>
       <Layout loading={loading}>
-        <div className="d-flex">
-          <h3>Products List</h3>
-          <button
-            className="btn btn-primary btn-sm m-1 ms-auto"
-            onClick={handleAdd}
-          >
-            AddProduct
-          </button>
-        </div>
-        <table className="table mt-3">
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Delete</th>
-              <th>Edit</th>
-            </tr>
-          </thead>
-          <tbody>
-            {allItems.map((item) => (
-              <tr key={item.id}>
-                <td>
-                  <img src={item.imageURL} width="100rem" />
-                </td>
-                <td>{item.name}</td>
-                <td>{item.price}</td>
-                <td>
-                  {
-                    <MdDeleteOutline
-                      fontSize="30px"
-                      cursor="pointer"
-                      onClick={() => handleDelete(item)}
-                    />
-                  }
-                </td>
-                <td>
-                  {
-                    <BiEdit
-                      fontSize="30px"
-                      cursor="pointer"
-                      onClick={() => displayModal(item, "edit")}
-                    />
-                  }
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Tabs
+          defaultActiveKey="profile"
+          id="uncontrolled-tab-example"
+          className="mb-3"
+        >
+          <Tab eventKey="home" title="Products">
+            <div className="d-flex">
+              <h3>Products List</h3>
+              <button
+                className="btn btn-primary btn-sm m-1 ms-auto"
+                onClick={handleAdd}
+              >
+                AddProduct
+              </button>
+            </div>
+            <table className="table mt-3">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Delete</th>
+                  <th>Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allItems.map((item) => (
+                  <tr key={item.id}>
+                    <td>
+                      <img src={item.imageURL} width="100rem" />
+                    </td>
+                    <td>{item.name}</td>
+                    <td>{item.price}</td>
+                    <td>
+                      {
+                        <MdDeleteOutline
+                          fontSize="30px"
+                          cursor="pointer"
+                          onClick={() => handleDelete(item)}
+                        />
+                      }
+                    </td>
+                    <td>
+                      {
+                        <BiEdit
+                          fontSize="30px"
+                          cursor="pointer"
+                          onClick={() => displayModal(item, "edit")}
+                        />
+                      }
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Tab>
+          <Tab eventKey="profile" title="AllUsersOrders">
+            <AllUsersOrders />
+          </Tab>
+        </Tabs>
+
         <Modal show={show} onHide={add ? sendToServer : handleEdit}>
           <Modal.Title>{add ? "Add Product" : "Edit Details"}</Modal.Title>
           <Modal.Body>

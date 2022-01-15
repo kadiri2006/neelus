@@ -64,13 +64,11 @@ export default function CartPage() {
       uid: JSON.parse(localStorage.getItem("verifiedUser")).uid,
     };
 
-    console.log(orderInfo);
-
     try {
       const orderRef = await addDoc(collection(db, "orders"), orderInfo);
-      console.log(orderRef.id);
+      // console.log(orderRef.id);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     setTimeout(() => {

@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { TiShoppingCart } from "react-icons/ti";
+import { FaUser } from "react-icons/fa";
 
 export default function Header() {
   let reduxState = useSelector((state) => state.cartReducer.cartItems);
@@ -34,6 +35,7 @@ export default function Header() {
                 aria-current="page"
                 to="/"
               >
+                <FaUser />
                 {JSON.parse(localStorage.getItem("verifiedUser")).email ??
                   "TestUser"}
               </Link>
