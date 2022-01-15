@@ -52,6 +52,12 @@ export default function Header() {
               <Link className="nav-link text-white" to="/cart">
                 <TiShoppingCart /> {reduxState.length}
               </Link>
+              {JSON.parse(localStorage.getItem("verifiedUser")).uid ===
+                "nIViJDa2lQQIVF2KNEkkW0yUI4I2" && (
+                <Link className="nav-link text-white" to="/admin">
+                  Admin
+                </Link>
+              )}
             </div>
           </div>
         </div>

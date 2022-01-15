@@ -3,6 +3,7 @@ import "./App.css";
 import Spinner from "./components/Spinner";
 import Admin from "./pages/Admin";
 import CartPage from "./pages/CartPage";
+import Empty from "./pages/Empty";
 import FirebaseTest from "./pages/FirebaseTest";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -41,9 +42,17 @@ export default function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoutes>
+            <AdminRoute>
               <Admin />
-            </ProtectedRoutes>
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/firebase"
+          element={
+            <AdminRoute>
+              <FirebaseTest />
+            </AdminRoute>
           }
         />
 
@@ -57,7 +66,8 @@ export default function App() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/firebase" element={<FirebaseTest />} />
+
+        <Route path="*" element={<Empty />} />
       </Routes>
     </div>
   );
@@ -68,5 +78,15 @@ export function ProtectedRoutes({ children }) {
     return children;
   } else {
     return <LoginPage />;
+  }
+}
+export function AdminRoute({ children }) {
+  if (
+    JSON.parse(localStorage.getItem("verifiedUser")).uid ===
+    "nIViJDa2lQQIVF2KNEkkW0yUI4I2"
+  ) {
+    return children;
+  } else {
+    return <Empty />;
   }
 }

@@ -136,7 +136,7 @@ export default function Admin() {
     <div>
       <Layout loading={loading}>
         <Tabs
-          defaultActiveKey="profile"
+          defaultActiveKey="home"
           id="uncontrolled-tab-example"
           className="mb-3"
         >
