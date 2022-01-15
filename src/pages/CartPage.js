@@ -85,7 +85,7 @@ export default function CartPage() {
 
   function totalPrice() {
     let sum = 0;
-    storeItems.forEach((element) => (sum += element.price));
+    storeItems.forEach((element) => (sum += parseInt(element.price)));
     return sum;
   }
 
@@ -103,8 +103,8 @@ export default function CartPage() {
               </tr>
             </thead>
             <tbody>
-              {storeItems.map((item) => (
-                <tr key={item.id}>
+              {storeItems.map((item, index) => (
+                <tr key={index}>
                   <td>
                     <img src={item.imageURL} width="100rem" />
                   </td>

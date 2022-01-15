@@ -1,6 +1,6 @@
 import { doc, updateDoc } from "firebase/firestore";
 
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc, deleteDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { MdDeleteOutline } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
@@ -15,6 +15,7 @@ export default function Admin() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [add, setAdd] = useState(false);
 
   const [deliveyData, setDeliveryData] = useState({
     name: "",
@@ -22,6 +23,7 @@ export default function Admin() {
     category: "",
     price: 0,
     id: "",
+    description: "",
   });
 
   const updateDeliveyData = (key, value) => {
@@ -39,6 +41,9 @@ export default function Admin() {
       case "price":
         setDeliveryData({ ...initialData, price: value });
         break;
+      case "description":
+        setDeliveryData({ ...initialData, description: value });
+        break;
 
       default:
         setDeliveryData(initialData);
@@ -48,7 +53,7 @@ export default function Admin() {
 
   useEffect(async () => {
     setLoading(true);
-    getAllProducts();
+    await getAllProducts();
     setLoading(false);
   }, []);
 
@@ -75,20 +80,68 @@ export default function Admin() {
     setShow(false);
   };
 
-  const displayModal = (item) => {
-    setDeliveryData({
-      name: item.name,
-      imageURL: item.imageURL,
-      category: item.category,
-      price: item.price,
-      id: item.id,
-    });
+  const displayModal = (item, test) => {
+    if (test === "edit") {
+      setAdd(false);
+    }
+    if (item === undefined) {
+      setDeliveryData({
+        name: "",
+        imageURL: "",
+        category: "",
+        price: 0,
+        id: "",
+      });
+    } else {
+      setDeliveryData({
+        name: item.name,
+        imageURL: item.imageURL,
+        category: item.category,
+        price: item.price,
+        id: item.id,
+      });
+    }
+
     setShow(true);
+  };
+
+  const handleAdd = () => {
+    setAdd(true);
+    displayModal();
+  };
+
+  const sendToServer = async (e) => {
+    e.preventDefault();
+    const docRef = await addDoc(collection(db, "bangles"), {
+      name: deliveyData.name,
+      imageURL: deliveyData.imageURL,
+      category: deliveyData.category,
+      price: deliveyData.price,
+
+      description: deliveyData.description,
+    });
+    window.location.reload();
+  };
+
+  const handleDelete = async (item) => {
+    await deleteDoc(doc(db, "bangles", item.id));
+    setLoading(true);
+    await getAllProducts();
+    setLoading(false);
   };
 
   return (
     <div>
-      <Layout>
+      <Layout loading={loading}>
+        <div className="d-flex">
+          <h3>Products List</h3>
+          <button
+            className="btn btn-primary btn-sm m-1 ms-auto"
+            onClick={handleAdd}
+          >
+            AddProduct
+          </button>
+        </div>
         <table className="table mt-3">
           <thead>
             <tr>
@@ -107,13 +160,21 @@ export default function Admin() {
                 </td>
                 <td>{item.name}</td>
                 <td>{item.price}</td>
-                <td>{<MdDeleteOutline fontSize="30px" cursor="pointer" />}</td>
+                <td>
+                  {
+                    <MdDeleteOutline
+                      fontSize="30px"
+                      cursor="pointer"
+                      onClick={() => handleDelete(item)}
+                    />
+                  }
+                </td>
                 <td>
                   {
                     <BiEdit
                       fontSize="30px"
                       cursor="pointer"
-                      onClick={() => displayModal(item)}
+                      onClick={() => displayModal(item, "edit")}
                     />
                   }
                 </td>
@@ -121,10 +182,10 @@ export default function Admin() {
             ))}
           </tbody>
         </table>
-        <Modal show={show} onHide={handleEdit}>
-          <Modal.Title>Edit Details</Modal.Title>
+        <Modal show={show} onHide={add ? sendToServer : handleEdit}>
+          <Modal.Title>{add ? "Add Product" : "Edit Details"}</Modal.Title>
           <Modal.Body>
-            <Form onSubmit={handleEdit}>
+            <Form onSubmit={add ? sendToServer : handleEdit}>
               <Row className="mb-3">
                 <Form.Group as={Col}>
                   <Form.Control
@@ -169,8 +230,22 @@ export default function Admin() {
                   />
                 </Form.Group>
               </Row>
+              {add && (
+                <Row className="mb-3">
+                  <Form.Group as={Col}>
+                    <Form.Control
+                      value={deliveyData.description}
+                      type="text"
+                      placeholder="description"
+                      onChange={(e) =>
+                        updateDeliveyData("description", e.target.value)
+                      }
+                    />
+                  </Form.Group>
+                </Row>
+              )}
 
-              <Button type="submit">UPDATE</Button>
+              <Button type="submit">{add ? "ADD" : "UPDATE"}</Button>
             </Form>
           </Modal.Body>
           <Modal.Footer>
